@@ -1,12 +1,12 @@
-package am.solidoGroup.companyemployeespring.security;
+package ru.itmentor.spring.boot_security.demo.security;
 
-import am.solidoGroup.companyemployeespring.repository.UserRepository;
-import am.solidoGroup.companyemployeespring.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.itmentor.spring.boot_security.demo.model.User;
+import ru.itmentor.spring.boot_security.demo.repo.UserRepository;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> byEmail = userRepository.findUserByEmail(username);
-        if(byEmail.isEmpty()){
+        if (byEmail.isEmpty()) {
             throw new UsernameNotFoundException("Username does not exist");
         }
         return new CurrentUser(byEmail.get());

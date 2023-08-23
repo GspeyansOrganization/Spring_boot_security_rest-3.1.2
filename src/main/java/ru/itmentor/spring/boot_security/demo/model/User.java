@@ -1,9 +1,14 @@
 package ru.itmentor.spring.boot_security.demo.model;
 
-import jakarta.persistence.*;
+
+import ru.itmentor.spring.boot_security.demo.util.UserRoleSetConverter;
+
+import javax.persistence.*;
+import java.util.Set;
+
 
 @Entity
-@Table(schema = "Spring_crudApi", name = "users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -18,8 +23,30 @@ public class User {
 
     @Column(name = "email")
     private String email;
+    @Column(name = "password")
+    private String password;
+
+    @Convert(converter = UserRoleSetConverter.class)
+    @Column(name = "user_roles", columnDefinition = "text")
+    private Set<Role> roles;
 
     public User() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -54,7 +81,6 @@ public class User {
         this.email = email;
     }
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -62,6 +88,8 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

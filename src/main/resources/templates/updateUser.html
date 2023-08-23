@@ -18,7 +18,7 @@
         <label for="lastname">lastname</label>
         <input type="text" th:field="*{lastName}" id="lastname"/>
         <input type="hidden" th:field="*{password}"/>
-        <label th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN.MANAGER)}"
+        <label th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN)}"
                th:each="role : ${roles}" th:for="${'role_' + role}" th:classappend="${' role-' + role.name()}">
             <input type="checkbox" th:id="${'role_' + role}" name="roles" th:value="${role}"
                    th:checked="${user.getRoles().contains(role)}"/>
@@ -27,7 +27,7 @@
         <input type="submit" value="Update user"/>
     </form>
     <br>
-    <a th:href="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN) ? '/admin/index' : '/manager/index'}">
+    <a th:href="@{/admin/index}">
         Back to All Users</a>
 
 </div>

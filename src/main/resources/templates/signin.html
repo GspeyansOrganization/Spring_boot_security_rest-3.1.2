@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"><head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<h2>Sign In</h2>
+<form th:action="@{/signin}" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
+    <button type="submit">Sign In</button>
+</form>
+<p th:if="${param.error}" style="color: red;">Invalid credentials</p>
+<p th:if="${param.logout}" style="color: green;">You have been logged out</p>
+<p>Don't have an account? <a th:href="@{/register}">Register</a></p>
 </body>
 </html>
