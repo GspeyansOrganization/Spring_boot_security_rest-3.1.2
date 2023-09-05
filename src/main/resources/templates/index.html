@@ -1,11 +1,55 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns: xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+<h1 th:text="${currentUser == null ? 'Welcome to Users view ' : 'Welcome to ' + currentUser.getUser().roles + ' ' + currentUser.user.firstName + ' ' + 'view'}"></h1>
 
+<table th:object="${currentUser}">
+    <tr style="margin-bottom: auto">
+        <td>Id</td>
+        <td>Email</td>
+        <td>Name</td>
+        <td>Surname</td>
+        <td th:text="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN) ? 'Role' : ''} + ''"></td>
+        <td th:text="${currentUser != null &&
+             (currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN) ||
+              currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).MANAGER)) ? 'Action' : ''} + ''">
+            <!-- Your links here -->
+        </td>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td bgcolor="#add8e6" th:text="${user.id}"></td>
+        <td bgcolor="#add8e6" th:text="${user.email}"></td>
+        <td bgcolor="#add8e6" th:text="${user.firstName}"></td>
+        <td bgcolor="#add8e6" th:text="${user.lastName}"></td>
+        <td th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN)}"
+            bgcolor="#add8e6" th:text="${user.roles}"></td>
+        <td th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).MANAGER)}"
+            bgcolor="#add8e6" th:text="${'        '}"></td>
 
+        <td th:if="${currentUser != null}">
+            <a th:href="@{/update/{id}(id=${user.id})}" th:if="${currentUser.user.roles.contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN) or (currentUser.user.roles.contains(T(ru.itmentor.spring.boot_security.demo.model.Role).MANAGER) and !user.roles.contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN))}">Edit</a>
+            <a th:href="@{/delete/{id}(id=${user.id})}" th:if="${currentUser.user.roles.contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN)}">Delete</a>
+        </td>
+
+    </tr>
+</table>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN)}" th:href="@{/admin}">Admins page</a>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).USER)}" th:href="@{/user}">Users page</a>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).MANAGER)}" th:href="@{/manager}">Managers page</a>
+<br>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).ADMIN)}" th:href="@{/admin/saveUser}">Add User</a>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).USER)}" th:href="@{/changeCredentials}">edit users credentials</a>
+<a th:if="${currentUser != null && currentUser.getUser().getRoles().contains(T(ru.itmentor.spring.boot_security.demo.model.Role).MANAGER)}" th:href="@{/changeCredentials}">edit managers credentials</a>
+
+<br>
+<a th:if="${currentUser == null}" th:href="@{/register}">register</a>
+<br>
+<a th:if="${currentUser != null}" th:href="@{/logout}">logout</a>
+<br>
+<a th:if="${currentUser == null}" th:href="@{/signin}">sign in</a>
 </body>
 </html>

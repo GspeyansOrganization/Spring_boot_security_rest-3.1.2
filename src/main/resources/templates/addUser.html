@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user</title>
+</head>
+<body>
+<h2>Add new user</h2>
+<form th:method="POST" th:action="@{/saveUser}" th:object="${user}">
+    <label for="email">email</label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <label for="firstname">firstname</label>
+    <input type="text" th:field="*{firstName}" id="firstname"/>
+    <label for="lastname">lastname</label>
+    <input type="text" th:field="*{lastName}" id="lastname"/>
+    <label for="password">password</label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <label th:each="role : ${user.roles}" th:for="${'role_' + role}" th:classappend="${' role-' + role.name()}">
+        <input type="checkbox" th:id="${'role_' + role}" th:name="roles" th:value="${role}"
+               th:checked="${user.getRoles().contains(role)}"/>
+        <span th:text="${role.name()}"></span>
+    </label>
+    <br>
+    <input type="submit" value="Add new user"/>
+</form>
+<br>
+<a th:href="@{/admin/index}">Back to All Users</a>
+<a th:href="@{/logout}">log out</a>
+</body>
+</html>
