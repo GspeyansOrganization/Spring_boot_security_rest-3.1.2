@@ -1,6 +1,5 @@
 package ru.itmentor.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +17,10 @@ import static ru.itmentor.spring.boot_security.demo.model.Role.MANAGER;
 
 @Controller
 public class MainController {
-
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    public MainController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/")
     public String UsersView(Model model) {

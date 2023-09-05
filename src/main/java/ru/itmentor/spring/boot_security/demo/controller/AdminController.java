@@ -1,10 +1,10 @@
 package ru.itmentor.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.itmentor.spring.boot_security.demo.model.Role;
 import ru.itmentor.spring.boot_security.demo.model.User;
 import ru.itmentor.spring.boot_security.demo.security.CurrentUser;
@@ -13,13 +13,13 @@ import ru.itmentor.spring.boot_security.demo.service.UserService;
 import java.util.List;
 import java.util.Set;
 
-import static ru.itmentor.spring.boot_security.demo.model.Role.ADMIN;
-
 @Controller
 public class AdminController {
+    private final UserService userService;
 
-    @Autowired
-    private UserService userService;
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/admin")
     public String adminPage() {
@@ -43,10 +43,8 @@ public class AdminController {
     }
 
     @PostMapping(value = "/saveUser")
-    public String addUser(@ModelAttribute("user") User user, @AuthenticationPrincipal CurrentUser currentUser) {
-        if (currentUser != null && currentUser.getUser().getRoles().contains(ADMIN)) {
-            userService.saveUser(user, true);
-        }
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user, true);
         return "redirect:/admin/index";
     }
 }

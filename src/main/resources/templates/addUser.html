@@ -13,7 +13,8 @@
     <input type="text" th:field="*{firstName}" id="firstname"/>
     <label for="lastname">lastname</label>
     <input type="text" th:field="*{lastName}" id="lastname"/>
-    <input type="hidden" th:field="*{password}"/>
+    <label for="password">password</label>
+    <input type="password" th:field="*{password}" id="password"/>
     <label th:each="role : ${user.roles}" th:for="${'role_' + role}" th:classappend="${' role-' + role.name()}">
         <input type="checkbox" th:id="${'role_' + role}" th:name="roles" th:value="${role}"
                th:checked="${user.getRoles().contains(role)}"/>

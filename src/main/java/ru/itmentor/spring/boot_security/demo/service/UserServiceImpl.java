@@ -31,11 +31,11 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("there is not provided user to save in database! ");
         }
         if (!isAdmin) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             this.setDefaultRole(user);
         } else {
-            user.setPassword(passwordEncoder.encode("1234"));
+            user.setRoles(user.getRoles());
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

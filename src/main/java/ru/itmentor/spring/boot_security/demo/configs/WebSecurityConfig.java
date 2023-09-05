@@ -1,11 +1,13 @@
 package ru.itmentor.spring.boot_security.demo.configs;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.itmentor.spring.boot_security.demo.security.UserDetailServiceImpl;
 
@@ -15,15 +17,13 @@ import static ru.itmentor.spring.boot_security.demo.model.Role.*;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
+    private final UserDetailServiceImpl userDetailService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailServiceImpl userDetailService, PasswordEncoder passwordEncoder) {
         this.successUserHandler = successUserHandler;
+        this.userDetailService = userDetailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

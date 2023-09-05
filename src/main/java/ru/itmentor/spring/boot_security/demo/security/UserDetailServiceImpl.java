@@ -1,6 +1,5 @@
 package ru.itmentor.spring.boot_security.demo.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,9 +11,10 @@ import java.util.Optional;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    public UserDetailServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
